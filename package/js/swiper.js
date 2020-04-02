@@ -7,7 +7,7 @@
  *
  * Released under the MIT License
  *
- * Released on: February 29, 2020
+ * Released on: April 2, 2020
  */
 
 (function (global, factory) {
@@ -1794,7 +1794,7 @@
     if (previousRealIndex !== realIndex) {
       swiper.emit('realIndexChange');
     }
-    if (swiper.initialized || swiper.runCallbacksOnInit) {
+    if (swiper.initialized || swiper.params.runCallbacksOnInit) {
       swiper.emit('slideChange');
     }
   }
@@ -3952,7 +3952,11 @@
       while ( len-- ) args[ len ] = arguments[ len ];
       var el;
       var params;
-      if (args.length === 1 && args[0].constructor && args[0].constructor === Object) {
+      if (
+        args.length === 1
+        && args[0].constructor
+        && args[0].constructor === Object
+      ) {
         params = args[0];
       } else {
         (assign = args, el = assign[0], params = assign[1]);
@@ -4032,7 +4036,9 @@
       // Find Wrapper
       var $wrapperEl;
       if (el && el.shadowRoot && el.shadowRoot.querySelector) {
-        $wrapperEl = $(el.shadowRoot.querySelector(("." + (swiper.params.wrapperClass))));
+        $wrapperEl = $(
+          el.shadowRoot.querySelector(("." + (swiper.params.wrapperClass)))
+        );
         // Children needs to return slot items
         $wrapperEl.children = function (options) { return $el.children(options); };
       } else {
@@ -4062,8 +4068,12 @@
           return swiper.params.direction === 'vertical';
         },
         // RTL
-        rtl: (el.dir.toLowerCase() === 'rtl' || $el.css('direction') === 'rtl'),
-        rtlTranslate: swiper.params.direction === 'horizontal' && (el.dir.toLowerCase() === 'rtl' || $el.css('direction') === 'rtl'),
+        rtl:
+          (el.dir && el.dir.toLowerCase() === 'rtl')
+          || $el.css('direction') === 'rtl',
+        rtlTranslate:
+          swiper.params.direction === 'horizontal'
+          && ((el.dir && el.dir.toLowerCase() === 'rtl') || $el.css('direction') === 'rtl'),
         wrongRTL: $wrapperEl.css('display') === '-webkit-box',
 
         // Indexes
@@ -4103,7 +4113,9 @@
             move: desktop[1],
             end: desktop[2],
           };
-          return Support.touch || !swiper.params.simulateTouch ? swiper.touchEventsTouch : swiper.touchEventsDesktop;
+          return Support.touch || !swiper.params.simulateTouch
+            ? swiper.touchEventsTouch
+            : swiper.touchEventsDesktop;
         }()),
         touchEventsData: {
           isTouched: undefined,
@@ -4143,7 +4155,6 @@
         // Images
         imagesToLoad: [],
         imagesLoaded: 0,
-
       });
 
       // Install Modules
@@ -4214,8 +4225,13 @@
       swiper.updateSlidesClasses();
 
       function setTranslate() {
-        var translateValue = swiper.rtlTranslate ? swiper.translate * -1 : swiper.translate;
-        var newTranslate = Math.min(Math.max(translateValue, swiper.maxTranslate()), swiper.minTranslate());
+        var translateValue = swiper.rtlTranslate
+          ? swiper.translate * -1
+          : swiper.translate;
+        var newTranslate = Math.min(
+          Math.max(translateValue, swiper.maxTranslate()),
+          swiper.minTranslate()
+        );
         swiper.setTranslate(newTranslate);
         swiper.updateActiveIndex();
         swiper.updateSlidesClasses();
@@ -4227,7 +4243,12 @@
           swiper.updateAutoHeight();
         }
       } else {
-        if ((swiper.params.slidesPerView === 'auto' || swiper.params.slidesPerView > 1) && swiper.isEnd && !swiper.params.centeredSlides) {
+        if (
+          (swiper.params.slidesPerView === 'auto'
+            || swiper.params.slidesPerView > 1)
+          && swiper.isEnd
+          && !swiper.params.centeredSlides
+        ) {
           translated = swiper.slideTo(swiper.slides.length - 1, 0, false, true);
         } else {
           translated = swiper.slideTo(swiper.activeIndex, 0, false, true);
@@ -4249,9 +4270,13 @@
       var currentDirection = swiper.params.direction;
       if (!newDirection) {
         // eslint-disable-next-line
-        newDirection = currentDirection === 'horizontal' ? 'vertical' : 'horizontal';
+        newDirection =
+          currentDirection === 'horizontal' ? 'vertical' : 'horizontal';
       }
-      if ((newDirection === currentDirection) || (newDirection !== 'horizontal' && newDirection !== 'vertical')) {
+      if (
+        newDirection === currentDirection
+        || (newDirection !== 'horizontal' && newDirection !== 'vertical')
+      ) {
         return swiper;
       }
 
@@ -4315,9 +4340,17 @@
 
       // Slide To Initial Slide
       if (swiper.params.loop) {
-        swiper.slideTo(swiper.params.initialSlide + swiper.loopedSlides, 0, swiper.params.runCallbacksOnInit);
+        swiper.slideTo(
+          swiper.params.initialSlide + swiper.loopedSlides,
+          0,
+          swiper.params.runCallbacksOnInit
+        );
       } else {
-        swiper.slideTo(swiper.params.initialSlide, 0, swiper.params.runCallbacksOnInit);
+        swiper.slideTo(
+          swiper.params.initialSlide,
+          0,
+          swiper.params.runCallbacksOnInit
+        );
       }
 
       // Attach events
@@ -4364,11 +4397,13 @@
         $wrapperEl.removeAttr('style');
         if (slides && slides.length) {
           slides
-            .removeClass([
-              params.slideVisibleClass,
-              params.slideActiveClass,
-              params.slideNextClass,
-              params.slidePrevClass ].join(' '))
+            .removeClass(
+              [
+                params.slideVisibleClass,
+                params.slideActiveClass,
+                params.slideNextClass,
+                params.slidePrevClass ].join(' ')
+            )
             .removeAttr('style')
             .removeAttr('data-swiper-slide-index');
         }
